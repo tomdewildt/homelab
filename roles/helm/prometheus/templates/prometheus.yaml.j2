@@ -1,0 +1,115 @@
+fullnameOverride: {{ prometheus.name }}
+alertmanager:
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/whitelist-source-range: "{{ alertmanager.whitelist }}"
+    hosts:
+      - {{ alertmanager.hostname }}
+    tls:
+    - secretName: alertmanager-tls
+      hosts:
+      - {{ alertmanager.hostname }}
+  alertmanagerSpec:
+    resources:
+      requests:
+        memory: 400Mi
+grafana:
+  defaultDashboardsEnabled: true
+  adminPassword: {{ grafana.password }}
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/whitelist-source-range: "{{ grafana.whitelist }}"
+    hosts:
+      - {{ grafana.hostname }}
+    tls:
+    - secretName: grafana-tls
+      hosts:
+      - {{ grafana.hostname }}
+  plugins:
+  - grafana-piechart-panel
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+      - name: "default"
+        orgId: 1
+        folder: ""
+        type: file
+        disableDeletion: false
+        editable: false
+        options:
+          path: /var/lib/grafana/dashboards/default
+  dashboards:
+    default:
+      ingress-dashboard:
+        json: '{{ lookup('file', '../files/ingress-dashboard.json') }}'
+      mongodb-dashboard:
+        json: '{{ lookup('file', '../files/mongodb-dashboard.json') }}'
+      postgresql-dashboard:
+        json: '{{ lookup('file', '../files/postgresql-dashboard.json') }}'
+  additionalDataSources:
+    - name: Loki
+      access: proxy
+      basicAuth: false
+      editable: false
+      jsonData:
+          tlsSkipVerify: true
+      orgId: 1
+      type: loki
+      url: http://{{ loki.name }}.{{ loki.namespace }}.svc.cluster.local:3100
+      version: 1
+kubeApiServer:
+  enabled: {{ prometheus.servicemonitors.kube_api_server.enabled }}
+kubelet:
+  enabled: {{ prometheus.servicemonitors.kubelet.enabled }}
+kubeControllerManager:
+  enabled: {{ prometheus.servicemonitors.kube_controller_manager.enabled }}
+coreDns:
+  enabled: {{ prometheus.servicemonitors.core_dns.enabled }}
+kubeDns:
+  enabled: {{ prometheus.servicemonitors.kube_dns.enabled }}
+kubeEtcd:
+  enabled: {{ prometheus.servicemonitors.kube_etcd.enabled }}
+kubeScheduler:
+  enabled: {{ prometheus.servicemonitors.kube_scheduler.enabled }}
+kubeProxy:
+  enabled: {{ prometheus.servicemonitors.kube_proxy.enabled }}
+kubeStateMetrics:
+  enabled: {{ prometheus.servicemonitors.kube_state_metrics.enabled }}
+prometheusOperator:
+  resources:
+    limits:
+      cpu: 400m
+      memory: 400Mi
+    requests:
+      cpu: 100m
+      memory: 200Mi
+prometheus:
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/whitelist-source-range: "{{ prometheus.whitelist }}"
+    hosts:
+      - {{ prometheus.hostname }}
+    tls:
+    - secretName: prometheus-tls
+      hosts:
+      - {{ prometheus.hostname }}
+  prometheusSpec:
+    serviceMonitorSelectorNilUsesHelmValues: false
+    resources:
+      requests:
+        memory: 1024Mi
+      limits:
+        memory: 2048Mi
