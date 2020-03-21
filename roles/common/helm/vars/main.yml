@@ -1,0 +1,3 @@
+---
+source: "{{ values }}"
+destination: "/tmp/{{ values | basename | regex_replace('\\.j2','') }}"

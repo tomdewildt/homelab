@@ -1,0 +1,27 @@
+---
+- name: "Checking if {{ name }} is already installed"
+  command: helm ls --all-namespaces --short --filter {{ name }}
+  register: helm
+  changed_when: false
+
+- name: "Creating {{ name }} namespace"
+  include_role:
+    name: common/kubernetes
+  vars:
+    config: .kube/config
+    definition: ../templates/namespace.yaml.j2
+  when: not helm.stdout
+
+- name: "Moving values to {{ inventory_hostname }}"
+  template:
+    src: "{{ source }}"
+    dest: "{{ destination }}"
+  when: not helm.stdout
+
+- name: "Installing {{ name }}"
+  command: >-
+    helm install {{ name }} {{ chart }}
+    --namespace {{ namespace }}
+    --version {{ version }}
+    --values {{ destination }}
+  when: not helm.stdout
