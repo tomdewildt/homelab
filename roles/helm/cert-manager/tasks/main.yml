@@ -1,0 +1,30 @@
+---
+- name: "Adding cert-manager helm repo"
+  command: helm repo add jetstack https://charts.jetstack.io
+  changed_when: false
+
+- name: "Updating helm repositories"
+  command: helm repo update2
+  changed_when: false
+
+- name: "Applying cert-manager crds"
+  command: "kubectl apply -f {{ cert_manager.crds }}"
+  changed_when: "'created' in command.stdout"
+  register: command
+
+- name: "Installing cert-manager chart"
+  include_role:
+    name: common/helm
+  vars:
+    name: "{{ cert_manager.name }}"
+    namespace: "{{ cert_manager.namespace }}"
+    chart: jetstack/cert-manager
+    version: "{{ cert_manager.version }}"
+    values: ../templates/cert-manager.yaml.j2
+
+- name: "Applying cert-manager issuers"
+  include_role:
+    name: common/kubernetes
+  vars:
+    config: .kube/config
+    definition: ../templates/issuers.yaml.j2
