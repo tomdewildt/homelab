@@ -112,3 +112,12 @@ ingress:
   name: nginx-ingress
   namespace: networking
   version: 1.33.5
+
+drone:
+  name: drone
+  namespace: drone
+  version: 2.7.2
+  username: tomdewildt
+  hostname: drone.meijldoorn.nl
+  # client_id: -> secrets.yml
+  # client_secret: -> secrets.yml
