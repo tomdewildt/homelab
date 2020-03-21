@@ -5,3 +5,8 @@
     - ups
     - docker
     - kubernetes/common
+
+- hosts: master
+  become: true
+  roles:
+    - kubernetes/master
