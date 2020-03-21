@@ -1,0 +1,16 @@
+apiVersion: kubeadm.k8s.io/v1beta2
+kind: InitConfiguration
+localAPIEndpoint:
+  advertiseAddress: {{ kubernetes.api_address }}
+  bindPort: 6443
+---
+apiVersion: kubeadm.k8s.io/v1beta2
+kind: ClusterConfiguration
+apiServer:
+  extraArgs:
+    feature-gates: "TTLAfterFinished=true"
+controllerManager:
+  extraArgs:
+    feature-gates: "TTLAfterFinished=true"
+networking:
+  podSubnet: {{ kubernetes.network }}

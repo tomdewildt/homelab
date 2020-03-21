@@ -1,0 +1,58 @@
+---
+- name: "Checking if kubeadm has already run"
+  stat:
+    path: /etc/kubernetes/pki/ca.key
+  register: ca
+
+- name: "Moving kubeadm config"
+  template:
+    src: templates/kubeadm.yaml.j2
+    dest: /tmp/kubeadm.yaml
+
+- name: "Initializing cluster"
+  when: not ca.stat.exists
+  command: kubeadm init --config /tmp/kubeadm.yaml
+  run_once: true
+
+- name: "Creating kubernetes directory"
+  file:
+    path: .kube
+    state: directory
+
+- name: "Copying admin.conf to home directory"
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: .kube/config
+    remote_src: true
+
+- name: "Retrieving join command"
+  command: kubeadm token create --print-join-command
+  changed_when: false
+  register: join_command
+
+- name: "Storing join command"
+  set_fact:
+    join_command: "{{ join_command.stdout }}"
+
+- name: "Patching kube-proxy config"
+  shell: >-
+    set -o pipefail
+    kubectl get configmap kube-proxy --kubeconfig .kube/config -n kube-system -o yaml |
+    sed "s/metricsBindAddress: \"\"/metricsBindAddress: 0.0.0.0:10249/" |
+    kubectl replace --kubeconfig .kube/config -f -
+  changed_when: false
+
+- name: "Recreating kube-proxy pods"
+  command: >-
+    kubectl delete pod
+    --selector k8s-app=kube-proxy
+    --kubeconfig .kube/config
+    --namespace kube-system
+  changed_when: false
+
+- name: "Installing network cni"
+  include_role:
+    name: common/kubernetes
+  vars:
+    config: .kube/config
+    definition: ../templates/calico.yaml.j2
