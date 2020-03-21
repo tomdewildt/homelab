@@ -107,3 +107,8 @@ metallb:
   peer_asn: 64512
   my_asn: 64513
   addresses: 10.40.0.128-10.40.0.254
+
+ingress:
+  name: nginx-ingress
+  namespace: networking
+  version: 1.33.5
