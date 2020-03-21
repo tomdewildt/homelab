@@ -1,0 +1,17 @@
+---
+- name: "Installing metallb chart"
+  include_role:
+    name: common/helm
+  vars:
+    name: "{{ metallb.name }}"
+    namespace: "{{ metallb.namespace }}"
+    chart: stable/metallb
+    version: "{{ metallb.version }}"
+    values: ../templates/metallb.yaml.j2
+
+- name: "Applying metallb configuration"
+  include_role:
+    name: common/kubernetes
+  vars:
+    config: .kube/config
+    definition: ../templates/metallb-config.yaml.j2

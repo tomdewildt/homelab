@@ -1,0 +1,17 @@
+existingConfigMap: metallb-config
+prometheus:
+  scrapeAnnotations: false
+  serviceMonitor:
+    enabled: false
+  prometheusRule:
+    enabled: false
+controller:
+  resources:
+    limits:
+      cpu: 100m
+      memory: 100Mi
+speaker:
+  resources:
+    limits:
+      cpu: 100m
+      memory: 100Mi
