@@ -28,3 +28,4 @@
     - helm/ingress
     - helm/drone
     - helm/postgresql
+    - helm/mongodb
