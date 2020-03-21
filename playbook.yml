@@ -19,3 +19,4 @@
 - hosts: master
   roles:
     - kubernetes/label
+    - kubernetes/helm
