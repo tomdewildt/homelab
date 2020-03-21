@@ -85,3 +85,8 @@ loki:
   name: loki
   namespace: logging
   version: 0.25.1
+
+promtail:
+  name: promtail
+  namespace: logging
+  version: 0.19.2

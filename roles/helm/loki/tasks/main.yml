@@ -1,0 +1,24 @@
+---
+- name: "Adding loki helm repo"
+  command: helm repo add loki https://grafana.github.io/loki/charts
+  changed_when: false
+
+- name: "Installing loki chart"
+  include_role:
+    name: common/helm
+  vars:
+    name: "{{ loki.name }}"
+    namespace: "{{ loki.namespace }}"
+    chart: loki/loki
+    version: "{{ loki.version }}"
+    values: ../templates/loki.yaml.j2
+
+- name: "Installing promtail chart"
+  include_role:
+    name: common/helm
+  vars:
+    name: "{{ promtail.name }}"
+    namespace: "{{ promtail.namespace }}"
+    chart: loki/promtail
+    version: "{{ promtail.version }}"
+    values: ../templates/promtail.yaml.j2
