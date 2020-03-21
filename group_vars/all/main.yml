@@ -45,3 +45,43 @@ local_path_provisioner:
   namespace: storage
   version: 0.0.12
   directory: /data
+
+prometheus:
+  name: prometheus
+  namespace: monitoring
+  version: 8.12.1
+  hostname: prometheus.meijldoorn.nl
+  whitelist: 10.50.0.0/24,10.60.0.0/24,10.70.0.0/24
+  servicemonitors:
+    kube_api_server:
+      enabled: true
+    kubelet:
+      enabled: true
+    kube_controller_manager:
+      enabled: true
+    core_dns:
+      enabled: true
+    kube_dns:
+      enabled: false
+    kube_etcd:
+      enabled: false
+    kube_scheduler:
+      enabled: true
+    kube_proxy:
+      enabled: true
+    kube_state_metrics:
+      enabled: true
+
+alertmanager:
+  hostname: alertmanager.meijldoorn.nl
+  whitelist: 10.50.0.0/24,10.60.0.0/24,10.70.0.0/24
+
+grafana:
+  hostname: grafana.meijldoorn.nl
+  whitelist: 10.50.0.0/24,10.60.0.0/24,10.70.0.0/24
+  # password: -> secrets.yml
+
+loki:
+  name: loki
+  namespace: logging
+  version: 0.25.1

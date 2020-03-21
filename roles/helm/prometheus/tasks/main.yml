@@ -1,0 +1,10 @@
+---
+- name: "Installing prometheus chart"
+  include_role:
+    name: common/helm
+  vars:
+    name: "{{ prometheus.name }}"
+    namespace: "{{ prometheus.namespace }}"
+    chart: stable/prometheus-operator
+    version: "{{ prometheus.version }}"
+    values: ../templates/prometheus.yaml.j2
