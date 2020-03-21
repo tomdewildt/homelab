@@ -1,0 +1,11 @@
+---
+- name: "Adding repositories: {{ repositories | map(attribute='name') | list }}"
+  yum_repository:
+    name: "{{ item.name }}"
+    description: "{{ item.desc }}"
+    file: "{{ item.file }}"
+    baseurl: "{{ item.url }}"
+    enabled: true
+    gpgcheck: true
+    gpgkey: "{{ item.gpg }}"
+  with_items: "{{ repositories }}"
