@@ -1,0 +1,20 @@
+---
+- name: "Installing helm"
+  get_url:
+    url: "https://get.helm.sh/helm-v{{ helm.version }}-linux-amd64.tar.gz"
+    dest: /tmp/helm.tar.gz
+
+- name: "Unpacking helm binary"
+  unarchive:
+    src: /tmp/helm.tar.gz
+    dest: /tmp
+    remote_src: yes
+    creates: /tmp/linux-amd64
+
+- name: "Moving helm binary to /usr/local/bin"
+  command: creates=/usr/local/bin/helm mv /tmp/linux-amd64/helm /usr/local/bin/helm
+  become: yes
+
+- name: "Adding stable repository"
+  command: helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+  changed_when: false
