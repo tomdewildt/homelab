@@ -1,0 +1,10 @@
+---
+- name: "Installing mongodb chart"
+  include_role:
+    name: common/helm
+  vars:
+    name: "{{ mongodb.name }}"
+    namespace: "{{ mongodb.namespace }}"
+    chart: stable/mongodb
+    version: "{{ mongodb.version }}"
+    values: ../templates/mongodb.yaml.j2

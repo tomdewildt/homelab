@@ -1,0 +1,51 @@
+usePassword: true
+mongodbRootPassword: {{ mongodb.password }}
+mongodbEnableIPv6: false
+mongodbDirectoryPerDB: true
+mongodbSystemLogVerbosity: 0
+mongodbDisableSystemLog: false
+
+service:
+  type: ClusterIP
+  port: 27017
+
+replicaSet:
+  enabled: true
+  useHostnames: true
+  name: {{ mongodb.replication.name }}
+  key: {{ mongodb.replication.key }}
+  replicas:
+    secondary: 1
+    arbiter: 1
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
+resourcesArbiter:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
+
+persistence:
+  enabled: true
+  mountPath: /bitnami/mongodb
+  subPath: ""
+  accessModes:
+    - ReadWriteOnce
+  size: 8Gi
+
+metrics:
+  enabled: true
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9216"
+  serviceMonitor:
+    enabled: true
+    namespace: {{ prometheus.namespace }}
