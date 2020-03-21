@@ -26,3 +26,4 @@
     - helm/cert-manager
     - helm/metallb
     - helm/ingress
+    - helm/drone

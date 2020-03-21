@@ -1,0 +1,56 @@
+service:
+  httpPort: 80
+  type: ClusterIP
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+  hosts:
+    - {{ drone.hostname }}
+  tls:
+    - secretName: drone-drone-tls
+      hosts:
+        - {{ drone.hostname }}
+sourceControl:
+  provider: github
+  github:
+    clientID: {{ drone.client_id }}
+    clientSecretKey: clientSecret
+    clientSecretValue: {{ drone.client_secret }}
+    server: https://github.com
+server:
+  host: {{ drone.hostname }}
+  adminUser: {{ drone.username }}
+  protocol: https
+  kubernetes:
+    enabled: true
+  resources:
+    requests:
+      memory: 32Mi
+      cpu: 40m
+    limits:
+      memory: 2Gi
+      cpu: 1
+agent:
+  replicas: 1
+  resources:
+    requests:
+      memory: 32Mi
+      cpu: 40m
+    limits:
+      memory: 2Gi
+      cpu: 1
+dind:
+  enabled: true
+  resources:
+    requests:
+      memory: 32Mi
+      cpu: 40m
+    limits:
+      memory: 2Gi
+      cpu: 1
+metrics:
+  prometheus:
+    enabled: true
