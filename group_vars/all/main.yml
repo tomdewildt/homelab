@@ -133,3 +133,12 @@ postgresql:
   #   name: -> secrets.yml
   #   username: -> secrets.yml
   #   password: -> secrets.yml
+
+mongodb:
+  name: mongodb
+  namespace: shared
+  version: 7.8.9
+  # password: -> secrets.yml
+  # replication:
+  #   name: -> secrets.yml
+  #   key: -> secrets.yml
