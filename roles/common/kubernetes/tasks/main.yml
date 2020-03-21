@@ -1,0 +1,13 @@
+---
+- name: "Moving definition to {{ inventory_hostname }}"
+  template:
+    src: "{{ source }}"
+    dest: "{{ destination }}"
+
+- name: "Applying {{ source }}"
+  command: >-
+    kubectl apply
+    --filename {{ destination }}
+    --kubeconfig {{ config | default('.kube/config') }}
+  changed_when: "'unchanged' not in command.stdout"
+  register: command

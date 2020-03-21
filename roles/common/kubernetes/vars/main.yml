@@ -1,0 +1,3 @@
+---
+source: "{{ definition }}"
+destination: "/tmp/{{ definition | basename | regex_replace('\\.j2','') }}"
