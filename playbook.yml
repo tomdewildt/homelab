@@ -22,3 +22,4 @@
     - kubernetes/helm
     - helm/local-path-provisioner
     - helm/prometheus
+    - helm/loki
