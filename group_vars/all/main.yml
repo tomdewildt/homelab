@@ -1,0 +1,6 @@
+---
+ups:
+  name: UPS
+  host: 10.10.0.3
+  # username: -> secrets.yml
+  # password: -> secrets.yml
