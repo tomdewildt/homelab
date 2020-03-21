@@ -1,0 +1,10 @@
+---
+- name: "Installing drone chart"
+  include_role:
+    name: common/helm
+  vars:
+    name: "{{ drone.name }}"
+    namespace: "{{ drone.namespace }}"
+    chart: stable/drone
+    version: "{{ drone.version }}"
+    values: ../templates/drone.yaml.j2
