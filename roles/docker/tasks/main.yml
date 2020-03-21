@@ -1,0 +1,46 @@
+---
+- name: "Installing docker dependencies"
+  include_role:
+    name: common/install
+  vars:
+    pkgs:
+      - yum-utils
+      - device-mapper-persistent-data
+      - lvm2
+
+- name: "Adding docker repo"
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docer-ce.repo
+
+- name: "Installing docker {{ docker.version }}"
+  yum:
+    name: "{{ item }}"
+    update_cache: true
+    state: present
+  with_items:
+    - containerd.io-{{ containerd.version }}
+    - docker-ce-{{ docker.version }}
+    - docker-ce-cli-{{ docker.version }}
+
+- name: "Creating docker directory"
+  file:
+    path: /etc/docker
+    owner: root
+    group: root
+    mode: "755"
+    state: directory
+
+- name: "Adding docker daemon settings"
+  copy:
+    src: files/daemon.json
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: "644"
+
+- name: "Starting docker daemon"
+  service:
+    name: docker
+    state: started
+    enabled: true
