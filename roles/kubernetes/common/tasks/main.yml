@@ -1,0 +1,82 @@
+---
+- name: "Adding kubernetes repositories"
+  include_role:
+    name: common/repository
+  vars:
+    repositories:
+      - name: Kubernetes
+        desc: Kubernetes YUM repository
+        file: kubernetes
+        url: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+        gpg: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+
+- name: "Installing kubernetes dependencies"
+  include_role:
+    name: common/install
+  vars:
+    pkgs:
+      - "kubelet-{{ kubernetes.version }}"
+      - "kubeadm-{{ kubernetes.version }}"
+      - "kubectl-{{ kubernetes.version }}"
+
+- name: "Disabling SELinux"
+  selinux:
+    state: disabled
+
+- name: "Disabling swap"
+  command: swapoff -a
+  changed_when: false
+
+- name: "Removing swap from fstab"
+  lineinfile:
+    dest: /etc/fstab
+    regexp: '(?i)^([^#][\S]+\s+(none|swap)\s+swap.*)'
+    line: '# \1'
+    backrefs: true
+    state: present
+
+- name: "Ensuring that net.bridge.bridge-nf-call-ip6tables is set to 1"
+  sysctl:
+    name: net.bridge.bridge-nf-call-ip6tables
+    value: "1"
+    state: present
+
+- name: "Ensuring that net.bridge.bridge-nf-call-iptables is set to 1"
+  sysctl:
+    name: net.bridge.bridge-nf-call-iptables
+    value: "1"
+    state: present
+
+- name: "Configuring firewall for master"
+  when: "'master' in group_names"
+  firewalld:
+    zone: public
+    port: "{{ item }}"
+    permanent: true
+    immediate: true
+    state: enabled
+  with_items: "{{ firewall.master }}"
+
+- name: "Configuring firewall for workers"
+  when: "'workers' in group_names"
+  firewalld:
+    zone: public
+    port: "{{ item }}"
+    permanent: true
+    immediate: true
+    state: enabled
+  with_items: "{{ firewall.workers }}"
+
+- name: "Setting kubelet args"
+  lineinfile:
+    path: /etc/sysconfig/kubelet
+    regexp: KUBELET_EXTRA_ARGS=
+    line: KUBELET_EXTRA_ARGS=--node-ip={{ ansible_host }}
+    state: present
+
+- name: "Starting kubelet"
+  service:
+    name: kubelet
+    state: started
+    daemon_reload: yes
+    enabled: true

@@ -10,3 +10,29 @@ containerd:
 
 docker:
   version: 19.03.4
+
+firewall:
+  master:
+    - 179/tcp
+    - 2379-2380/tcp
+    - 6443/tcp
+    - 8472/udp
+    - 9100/tcp
+    - 10249/tcp
+    - 10250/tcp
+    - 10251/tcp
+    - 10252/tcp
+    - 10255/tcp
+  workers:
+    - 179/tcp
+    - 8472/udp
+    - 9100/tcp
+    - 10249/tcp
+    - 10250/tcp
+    - 10255/tcp
+    - 30000-32767/tcp
+
+kubernetes:
+  version: 1.17.0
+  api_address: 10.20.0.2
+  network: 10.80.0.0/16
