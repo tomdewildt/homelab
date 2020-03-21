@@ -23,3 +23,4 @@
     - helm/local-path-provisioner
     - helm/prometheus
     - helm/loki
+    - helm/cert-manager

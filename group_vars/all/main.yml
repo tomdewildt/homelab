@@ -90,3 +90,11 @@ promtail:
   name: promtail
   namespace: logging
   version: 0.19.2
+
+cert_manager:
+  name: cert-manager
+  namespace: networking
+  version: 0.13.1
+  crds: https://raw.githubusercontent.com/jetstack/cert-manager/release-0.11/deploy/manifests/00-crds.yaml
+  dns: 10.20.0.1
+  # email: -> secrets.yml
