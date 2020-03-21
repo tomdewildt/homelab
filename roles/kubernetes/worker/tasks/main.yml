@@ -1,0 +1,9 @@
+---
+- name: "Checking if kubelet.conf exists"
+  stat:
+    path: /etc/kubernetes/kubelet.conf
+  register: kubelet
+
+- name: "Joining workers"
+  when: not kubelet.stat.exists
+  command: "{{ hostvars[groups['master'][0]].join_command }}"

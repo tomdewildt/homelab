@@ -10,3 +10,8 @@
   become: true
   roles:
     - kubernetes/master
+
+- hosts: workers
+  become: true
+  roles:
+    - kubernetes/worker
