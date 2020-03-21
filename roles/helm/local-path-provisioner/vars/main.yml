@@ -1,0 +1,4 @@
+---
+chart_source: "https://github.com/rancher/local-path-provisioner/archive/v{{ local_path_provisioner.version }}.tar.gz"
+chart_archive: "/tmp/local-path-provisioner.tar.gz"
+chart_destination: "/tmp/local-path-provisioner-{{ local_path_provisioner.version }}"

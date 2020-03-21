@@ -1,0 +1,27 @@
+---
+- name: "Downloading local-path-provisioner chart"
+  get_url:
+    url: "{{ chart_source }}"
+    dest: "{{ chart_archive }}"
+
+- name: "Unpacking local-path-provisioner chart"
+  unarchive:
+    src: "{{ chart_archive }}"
+    dest: /tmp
+    remote_src: yes
+    creates: "{{ chart_destination }}"
+
+- name: "Installing local-path-provisioner chart"
+  include_role:
+    name: common/helm
+  vars:
+    name: "{{ local_path_provisioner.name }}"
+    namespace: "{{ local_path_provisioner.namespace }}"
+    chart: "{{ chart_destination }}/deploy/chart"
+    version: "{{ local_path_provisioner.version }}"
+    values: ../templates/local-path-provisioner.yaml.j2
+
+- name: "Setting storageclass as default"
+  command: 'kubectl patch storageclass local-path -p ''{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'''
+  changed_when: "'no change' not in patch.stdout"
+  register: patch

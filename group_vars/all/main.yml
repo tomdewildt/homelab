@@ -39,3 +39,9 @@ kubernetes:
 
 helm:
   version: 3.1.2
+
+local_path_provisioner:
+  name: local-path-provisioner
+  namespace: storage
+  version: 0.0.12
+  directory: /data

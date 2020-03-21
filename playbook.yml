@@ -20,3 +20,4 @@
   roles:
     - kubernetes/label
     - kubernetes/helm
+    - helm/local-path-provisioner
