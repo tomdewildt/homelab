@@ -121,3 +121,15 @@ drone:
   hostname: drone.meijldoorn.nl
   # client_id: -> secrets.yml
   # client_secret: -> secrets.yml
+
+postgresql:
+  name: postgresql
+  namespace: shared
+  version: 8.6.3
+  database: postgres
+  # username: -> secrets.yml
+  # password: -> secrets.yml
+  # replication:
+  #   name: -> secrets.yml
+  #   username: -> secrets.yml
+  #   password: -> secrets.yml
