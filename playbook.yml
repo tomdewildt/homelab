@@ -24,3 +24,4 @@
     - helm/prometheus
     - helm/loki
     - helm/cert-manager
+    - helm/metallb
