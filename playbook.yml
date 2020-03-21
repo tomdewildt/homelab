@@ -25,3 +25,4 @@
     - helm/loki
     - helm/cert-manager
     - helm/metallb
+    - helm/ingress

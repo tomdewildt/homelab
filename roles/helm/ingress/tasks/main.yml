@@ -1,0 +1,17 @@
+---
+- name: "Installing ingress chart"
+  include_role:
+    name: common/helm
+  vars:
+    name: "{{ ingress.name }}"
+    namespace: "{{ ingress.namespace }}"
+    chart: stable/nginx-ingress
+    version: "{{ ingress.version }}"
+    values: ../templates/ingress.yaml.j2
+
+- name: "Applying ingress service monitor"
+  include_role:
+    name: common/kubernetes
+  vars:
+    config: .kube/config
+    definition: ../templates/servicemonitor.yaml.j2
