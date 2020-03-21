@@ -4,3 +4,4 @@
   roles:
     - ups
     - docker
+    - kubernetes/common
