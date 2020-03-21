@@ -1,0 +1,10 @@
+---
+- name: "Installing postgresql chart"
+  include_role:
+    name: common/helm
+  vars:
+    name: "{{ postgresql.name }}"
+    namespace: "{{ postgresql.namespace }}"
+    chart: stable/postgresql
+    version: "{{ postgresql.version }}"
+    values: ../templates/postgresql.yaml.j2
