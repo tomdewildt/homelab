@@ -27,3 +27,4 @@
     - helm/metallb
     - helm/ingress
     - helm/drone
+    - helm/postgresql
