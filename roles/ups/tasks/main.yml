@@ -1,0 +1,32 @@
+---
+- name: "Installing ups dependencies"
+  include_role:
+    name: common/install
+  vars:
+    pkgs:
+      - apcupsd
+
+- name: "Backing up apcupsd.conf"
+  command: creates=/etc/apcupsd/apcupsd.conf.backup mv /etc/apcupsd/apcupsd.conf /etc/apcupsd/apcupsd.conf.backup
+
+- name: "Adding apcupsd.conf"
+  template:
+    src: templates/apcupsd.conf.j2
+    dest: /etc/apcupsd/apcupsd.conf
+    owner: root
+    group: root
+    mode: "644"
+
+- name: "Adding apcupsd firewall rule"
+  firewalld:
+    zone: public
+    port: 3052/udp
+    permanent: true
+    immediate: true
+    state: enabled
+
+- name: "Starting apcupsd daemon"
+  service:
+    name: apcupsd
+    state: started
+    enabled: true
