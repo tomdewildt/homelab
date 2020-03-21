@@ -15,3 +15,7 @@
   become: true
   roles:
     - kubernetes/worker
+
+- hosts: master
+  roles:
+    - kubernetes/label
