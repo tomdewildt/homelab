@@ -1,0 +1,50 @@
+postgresqlUsername: {{ postgresql.username }}
+postgresqlPassword: {{ postgresql.password }}
+postgresqlDatabase: {{ postgresql.database }}
+postgresqlDataDir: /bitnami/postgresql/data
+
+replication:
+  enabled: true
+  user: {{ postgresql.replication.username }}
+  password: {{ postgresql.replication.password }}
+  slaveReplicas: 2
+  synchronousCommit: "on"
+  numSynchronousReplicas: 1
+  applicationName: {{ postgresql.replication.name }}
+
+service:
+  type: ClusterIP
+  port: 5432
+
+persistence:
+  enabled: true
+  mountPath: /bitnami/postgresql
+  subPath: ""
+  accessModes:
+    - ReadWriteOnce
+  size: 8Gi
+  annotations: {}
+
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 250m
+
+networkPolicy:
+  enabled: false
+  allowExternal: true
+
+metrics:
+  enabled: true
+  service:
+    type: ClusterIP
+    annotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "9187"
+  serviceMonitor:
+    enabled: true
+    interval: 30s
+    scrapeTimeout: 10s
+    namespace: {{ prometheus.namespace }}
+  prometheusRule:
+    enabled: false
