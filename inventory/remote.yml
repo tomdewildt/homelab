@@ -1,0 +1,10 @@
+master:
+  hosts:
+    master.meijldoorn.nl:
+      ansible_host: master.meijldoorn.nl
+workers:
+  hosts:
+    worker-1.meijldoorn.nl:
+      ansible_host: worker-1.meijldoorn.nl
+    worker-2.meijldoorn.nl:
+      ansible_host: worker-2.meijldoorn.nl
