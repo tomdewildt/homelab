@@ -8,12 +8,12 @@
   unarchive:
     src: /tmp/helm.tar.gz
     dest: /tmp
-    remote_src: yes
+    remote_src: true
     creates: /tmp/linux-amd64
 
 - name: "Moving helm binary to /usr/local/bin"
   command: creates=/usr/local/bin/helm mv /tmp/linux-amd64/helm /usr/local/bin/helm
-  become: yes
+  become: true
 
 - name: "Adding stable repository"
   command: helm repo add stable https://kubernetes-charts.storage.googleapis.com/
