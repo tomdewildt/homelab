@@ -8,7 +8,7 @@
   unarchive:
     src: "{{ chart_archive }}"
     dest: /tmp
-    remote_src: yes
+    remote_src: true
     creates: "{{ chart_destination }}"
 
 - name: "Installing local-path-provisioner chart"
