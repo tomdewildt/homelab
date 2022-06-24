@@ -1,5 +1,6 @@
 skip_list:
-  - 106
-  - 204
-  - 208
-  - 303
+  - command-instead-of-module
+  - fqcn-builtins
+  - risky-file-permissions
+  - role-name
+  - var-spacing
