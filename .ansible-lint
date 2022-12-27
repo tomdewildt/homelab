@@ -1,6 +1,8 @@
 skip_list:
+  - args[module]
   - command-instead-of-module
-  - fqcn-builtins
+  - fqcn[action]
+  - fqcn[action-core]
+  - no-free-form
   - risky-file-permissions
-  - role-name
-  - var-spacing
+  - role-name[path]
