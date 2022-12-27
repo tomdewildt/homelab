@@ -1,5 +1,5 @@
 # Home Lab
-[![Build](https://img.shields.io/github/workflow/status/tomdewildt/homelab/ci/master)](https://github.com/tomdewildt/homelab/actions?query=workflow%3Aci)
+[![Build](https://img.shields.io/github/actions/workflow/status/tomdewildt/homelab/ci.yml?branch=master)](https://github.com/tomdewildt/homelab/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/tomdewildt/homelab)](https://github.com/tomdewildt/homelab/blob/master/LICENSE)
 
 This repository contains the configuration for my home lab servers and network.
