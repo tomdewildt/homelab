@@ -1,6 +1,7 @@
 skip_list:
   - command-instead-of-module
   - fqcn-builtins
+  - name[template]
   - risky-file-permissions
   - role-name
   - var-spacing
