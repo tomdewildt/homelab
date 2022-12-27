@@ -1,22 +1,26 @@
 ---
-- hosts: all
+- name: Homelab Playbook - General
+  hosts: all
   become: true
   roles:
     - ups
     - docker
     - kubernetes/common
 
-- hosts: master
+- name: Homelab Playbook - Master
+  hosts: master
   become: true
   roles:
     - kubernetes/master
 
-- hosts: workers
+- name: Homelab Playbook - Workers
+  hosts: workers
   become: true
   roles:
     - kubernetes/worker
 
-- hosts: master
+- name: Homelab Playbook - Setup
+  hosts: master
   roles:
     - kubernetes/label
     - kubernetes/helm
