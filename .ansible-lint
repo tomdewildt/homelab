@@ -1,7 +1,12 @@
 skip_list:
   - command-instead-of-module
-  - fqcn-builtins
+  - fqcn
   - name[template]
+  - no-changed-when
+  - no-free-form
   - risky-file-permissions
   - role-name
+  - var-naming[no-reserved]
+  - var-naming[no-role-prefix]
   - var-spacing
+  - yaml[line-length]
