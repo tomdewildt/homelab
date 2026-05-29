@@ -6,7 +6,6 @@ skip_list:
   - no-free-form
   - risky-file-permissions
   - role-name
-  - syntax-check[unknown-module]
   - var-naming[no-reserved]
   - var-naming[no-role-prefix]
   - var-spacing
