@@ -1,6 +1,6 @@
 skip_list:
   - command-instead-of-module
-  - fqcn-builtins
+  - fqcn[action]
   - name[template]
   - no-changed-when
   - no-free-form
